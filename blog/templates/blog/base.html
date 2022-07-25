@@ -19,9 +19,11 @@
 
     <header class="page-header">
         <div class="container">
-            <a href="{% url 'post_new' %}" class="top-menu" >
-                {% include './icons/file-earmark-plus.svg' %}
-            </a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'post_new' %}" class="top-menu" >
+                    {% include './icons/file-earmark-plus.svg' %}
+                </a>
+            {% endif %}
             <h1><a href="/">بسم الله الرحمن الرحیم</a></h1>
         </div>
     </header>
