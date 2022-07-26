@@ -12,7 +12,7 @@
             </p>                                   
             <p style="color:rgb(76, 158, 37);">{{ post.text|linebreaksbr }}</p>
         </article>
-        <hr>
+        <a href="{% url 'post_detail' pk=post.pk %}">Comments: {{ post.approved_comments.count }}</a>
     {% endfor %}
 {% endblock %}    
        
