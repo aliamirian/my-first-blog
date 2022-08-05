@@ -1,0 +1,18 @@
+
+{% extends 'blog/base.html' %}
+
+{% block content %}   
+    {% for post in posts %}
+         <article class="post">
+
+            <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+             <p>     <time class="date">
+                            {{ post.published_date }}
+                     </time>
+            </p>                                   
+            <p style="color:rgb(76, 158, 37);">{{ post.text|linebreaksbr|truncatechars:50 }}</p>
+        </article>
+        <a href="{% url 'post_detail' pk=post.pk %}">Comments: {{ post.approved_comments.count }}</a>
+    {% endfor %}
+{% endblock %}    
+       
