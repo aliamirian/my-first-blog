@@ -1,6 +1,6 @@
 
 import imp
-from turtle import pos
+#from turtle import pos
 from django.utils import timezone
 from .models import Post , Comment
 from django.shortcuts import render, get_object_or_404, redirect
