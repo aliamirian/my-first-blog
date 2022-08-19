@@ -1,4 +1,5 @@
 
+from cgitb import text
 import imp
 #from turtle import pos
 from django.utils import timezone
@@ -6,7 +7,11 @@ from .models import Post, Comment
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.mixins import LoginRequiredMixin
+# for test api with Postman
+from django.http import JsonResponse
+import json
 
 from django.http import Http404
 
@@ -18,6 +23,8 @@ from django.contrib.auth.views import LoginView, LogoutView
 # from linkedin
 class LoginInterfaceView(LoginView):
     template_name = "blog/login.html"
+    
+
 
 
 class LogoutInterfaceView(LoginRequiredMixin, LogoutView):
@@ -57,10 +64,12 @@ class PostDetailsView(DetailView):
     model = Post
     context_object_name = "post"
 
-
+@csrf_exempt
 def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST)
+        print(' **** user is  : ****  ', request.user)
+        print(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
@@ -69,7 +78,8 @@ def post_new(request):
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm()
-    return render(request, 'blog/post_edit.html', {'form': form})
+        form_title= 'New post'
+    return render(request, 'blog/post_edit.html', {'form': form , 'form_title': form_title})
 
 
 def post_edit(request, pk):
@@ -84,7 +94,8 @@ def post_edit(request, pk):
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
-    return render(request, 'blog/post_edit.html', {'form': form})
+        form_title= 'Edit post'
+    return render(request, 'blog/post_edit.html', {'form': form ,'form_title': form_title} )
 
 
 def post_draft_list(request):
@@ -104,9 +115,17 @@ def post_remove(request, pk):
     post.delete()
     return redirect('post_list')
 
-
+# @csrf_exempt    # for test with postman
 def add_comment_to_post(request, pk):
+    
     post = get_object_or_404(Post, pk=pk)
+    """
+    print (request.POST ,post , pk)     # for test with Postman
+    return JsonResponse({
+                'status ' : ' OK',
+            }, encoder=json.JSONEncoder
+            )
+    """        
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
@@ -114,6 +133,9 @@ def add_comment_to_post(request, pk):
             comment.post = post
             comment.save()
             return redirect('post_detail', pk=post.pk)
+            
+
+            
     else:
         form = CommentForm()
     return render(request, 'blog/add_comment_to_post.html', {'form': form})
