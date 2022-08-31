@@ -21,13 +21,18 @@
         {% else %}
             <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
         {% endif %}
-        <h2>{{ post.title }}</h2>
+        <h2>{{ post.title }}
+            <button type="button" class="btn btn-warning" onclick="window.history.back();" style="position: relative; left: 0;">Back to Posts</button>
+        </h2>        
         <p>{{ post.text|linebreaksbr }}</p>
     </article>
-
+    
 <hr>
-
+<h2>
+    <button type="button" class="btn btn-warning" onclick="window.history.back();" style="position: relative; left: 0;">Back to Posts</button>
+</h2>
 <a class="btn btn-default" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
+
 {% for comment in post.comments.all %}
     {% if user.is_authenticated or comment.approved_comment %}
     <div class="comment">

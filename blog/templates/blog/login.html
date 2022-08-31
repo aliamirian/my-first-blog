@@ -4,8 +4,29 @@
 
 
 
-<form method='post'>{% csrf_token %}
-    {{form.as_p}}
+<form method='post'>
+    {% csrf_token %}
+    <!-- {{form.as_p}} -->
+    <!-- or as table -->
+    <!-- <table>
+        {{form.as_table}}
+    </table> -->
+    
+    <!-- or give one field  -->
+
+
+    <table >
+        <tr>
+          <th>{{ form.username.label_tag }}</th>
+          <td>{{ form.username }}</td>
+        </tr>
+        <tr>
+          <th>{{ form.password.label_tag }}</th>
+          <td>{{ form.password}}</td>
+        </tr>
+      </table>
+
+   <br>
  <!--
 <input type='submit' class="btn btn-secondary">
  -->   

@@ -68,12 +68,9 @@ class PostDetailsView(DetailView):
 def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST)
-        print(' **** user is  : ****  ', request.user)
-        print(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-
             post.save()
             return redirect('post_detail', pk=post.pk)
     else:
@@ -89,7 +86,6 @@ def post_edit(request, pk):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-
             post.save()
             return redirect('post_detail', pk=post.pk)
     else:
